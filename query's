@@ -1,0 +1,27 @@
+Livros mais vendidos:
+select * from 
+(select 
+*,
+(select count(1) from itens_da_venda where itens_da_venda.idlivro = livro.idlivro) as Livros_Vendidos
+from livro) tab
+where Livros_Vendidos >0 order by Livros_Vendidos
+
+Venda com maior valor:
+(select 
+*,
+(select
+sum(subtotal)
+from itens_da_venda
+where idvenda = venda.idvenda 
+group by idvenda ) as valorvenda
+from venda) tab
+order by valorvenda desc
+
+Qual cliente fez o maior numero de compras:
+select * from (
+	select 
+    *,
+    (select count(1) from venda where idcliente = cliente.idcliente group by idcliente) as qtdvendasvenda
+    from cliente
+) tab 
+order by qtdvendasvenda desc
